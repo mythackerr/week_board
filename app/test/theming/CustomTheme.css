@@ -1,0 +1,54 @@
+.root {
+    background-color: white;
+    color: var(--color-gray-500);
+    padding: 5px;
+    border: 1px solid red;
+}
+
+.table {
+    td[role="row"] {
+        color: red;
+    }
+
+    tr:first-child {
+        height: 100px;
+    }
+    tr {
+        height: 50px;
+    }
+}
+
+.table-active {
+    background-color: transparent;
+}
+
+.label_with_line {
+    position: relative;
+    z-index: 1;
+    font-size: var(--text-sm);
+    &::after {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 100vw;
+        height: 1px;
+        background-color: var(--color-gray-200);
+
+        top: 50%;
+        left: 50%;
+        transform: translate(2%, -50%);
+    }
+}
+
+.event {
+    background-color: palegreen;
+
+    border: 1px solid palegreen;
+    padding: 1rem;
+    margin: 0 1rem;
+    border-radius: 1rem;
+
+    * {
+        color: black;
+    }
+}
