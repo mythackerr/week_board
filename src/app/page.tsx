@@ -16,7 +16,6 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import DraftedTodo from "@/components/DraftedTodo";
 import CalendarView from "@/components/CalendarView";
-import MyAccount from "@/components/MyAccount";
 import { createGroup } from "@/lib/DataTypes";
 import ProjectSwitcher from "@/components/ProjectSwitcher";
 import {

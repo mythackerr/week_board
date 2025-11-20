@@ -1,4 +1,4 @@
-import { Project } from "@/src/lib/DataTypes";
+import { Project } from "@/lib/DataTypes";
 import { createContext, useContext } from "react";
 
 type SigProjectContext = {
