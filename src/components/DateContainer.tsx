@@ -1,4 +1,4 @@
-import leadZero from "@/lib/utils";
+import leadZero from "@/lib/myutils";
 
 interface IDateContainer {
   dateNumber: number;

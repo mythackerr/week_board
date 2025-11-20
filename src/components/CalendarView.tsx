@@ -6,7 +6,7 @@ import DateContainer from "./DateContainer";
 import customTheme from "./CustomTheme";
 import { useEffect, useRef, useState } from "react";
 import { createTask, Task, TaskGroup, TaskID } from "@/lib/DataTypes";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { projectStore, useProject } from "@/app/store";
 import { v4 } from "uuid";
 
@@ -99,11 +99,25 @@ export default function Calendar() {
             </div>
           );
         }}
+        eventDragStop={(info) => {
+          const { task, taskGroup } = info.event.extendedProps as {
+            task: Task;
+            taskGroup: TaskGroup;
+          };
+
+          console.log(info);
+
+          // task.time.start = info.event.start!;
+          // task.time.end = info.event.end!;
+          // projectStore.updateTask(taskGroup, task);
+        }}
         eventResize={(info) => {
           const { task, taskGroup } = info.event.extendedProps as {
             task: Task;
             taskGroup: TaskGroup;
           };
+
+          console.log(info.event);
 
           task.time.start = info.event.start!;
           task.time.end = info.event.end!;

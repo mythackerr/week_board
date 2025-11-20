@@ -24,7 +24,9 @@ export function TGContainer({ children, className }: PropsTGContainer) {
 
   return (
     <OpenContext value={value}>
-      <div className={cn("border m-5 rounded-md", className)}>{children}</div>
+      <div className={cn("m-5 rounded-md overflow-hidden", className)}>
+        {children}
+      </div>
     </OpenContext>
   );
 }
@@ -40,22 +42,23 @@ export function TGHeader({
   const { open, setOpen } = useContext(OpenContext);
 
   return (
-    <div className="flex justify-between items-center p-2  ">
-      <div className="select-none text-sm">{tg?.name}</div>
+    <div className="flex justify-between items-center ">
+      <div
+        className="select-none text-sm flex gap-3 flex-1 p-1 items-center"
+        onClick={() => setOpen(!open)}
+      >
+        {open ? <ChevronUp /> : <ChevronDown />}
+
+        {tg?.name}
+      </div>
       <div className="flex justify-between items-center gap-x-5">
-        <div
-          className="cursor-pointer hover:bg-gray-100 rounded-full"
-          onClick={() => setOpen(!open)}
-        >
-          {open ? <ChevronUp /> : <ChevronDown />}
-        </div>
         <div
           className="cursor-pointer"
           onClick={() => {
             projectStore.removeTaskGroup(tg);
           }}
         >
-          <Trash2 />
+          <Trash2 className="size-4" />
         </div>
         <div>{action}</div>
       </div>
@@ -71,7 +74,7 @@ export function TaskContainer({ children }: { children: ReactNode }) {
   const { open } = useContext(OpenContext);
   return (
     <div className={cn(open ? "block" : "hidden")}>
-      <div className="flex flex-col gap-2 p-2">{children}</div>
+      <div className="flex flex-col gap-2">{children}</div>
     </div>
   );
 }

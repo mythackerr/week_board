@@ -5,8 +5,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+} from "@/src/components/ui/dropdown-menu";
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from "@/src/components/ui/avatar";
 import { LogOut, Plus, Settings } from "lucide-react";
 export default function MyAccount() {
   return (

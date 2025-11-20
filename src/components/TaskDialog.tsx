@@ -25,9 +25,9 @@ export default function TaskDialog({ tg }: { tg: TaskGroup }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
-          Add Task <Plus />
-        </Button>
+        <div className="bg-primary text-primary-foreground rounded-sm p-1">
+          <Plus className="size-4" />
+        </div>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

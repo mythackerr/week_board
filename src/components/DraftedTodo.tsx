@@ -4,9 +4,13 @@ import { Draggable } from "@fullcalendar/interaction";
 import { createTask, Task, TaskGroup } from "@/lib/DataTypes";
 import { ArrowUpRight, ChevronDown, Pencil, Plus, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "./ui/button";
-import { PopoverContent, Popover, PopoverTrigger } from "./ui/popover";
-import { Calendar } from "./ui/calendar";
+import { Button } from "@/components/ui/button";
+import {
+  PopoverContent,
+  Popover,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
 import { projectStore } from "@/app/store";
 import {
   Dialog,
