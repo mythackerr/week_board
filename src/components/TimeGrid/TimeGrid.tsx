@@ -15,9 +15,6 @@ export default function Calendar() {
   const [start, setStart] = useState<Date | null>();
   const [end, setEnd] = useState<Date | null>();
 
-  useEffect(() => {
-    console.log(start?.getHours(), end?.getHours());
-  }, [start, end]);
   const calendarRef = useRef<FullCalendar>(null);
 
   useEffect(() => {
@@ -84,14 +81,8 @@ export default function Calendar() {
         // functions
 
         eventDidMount={(info) => {
-          // const { task, taskGroup } = info.event.extendedProps as {
-          //   task: Task;
-          //   taskGroup: TaskGroup;
-          // };
           setStart(info.event.start!);
           setEnd(info.event.end!);
-          // console.log(info.event.start);
-          // projectStore.updateTask(taskGroup, task);
         }}
         eventReceive={(info) => {
           const { task, taskGroup } = info.event.extendedProps as {
@@ -120,8 +111,6 @@ export default function Calendar() {
             taskGroup: TaskGroup;
           };
 
-          // alert("Drag featured switched off due to unwanted bug! :(");
-          // console.log(info.event.start);
           task.time.start = start!;
           task.time.end = end!;
           projectStore.updateTask(taskGroup, task);
@@ -131,8 +120,6 @@ export default function Calendar() {
             task: Task;
             taskGroup: TaskGroup;
           };
-
-          console.log(task);
 
           task.time.start = info.event.start!;
           task.time.end = info.event.end!;

@@ -33,6 +33,14 @@ import { Textarea } from "./ui/textarea";
 import { useDraggable } from "@dnd-kit/core";
 
 import { CSS } from "@dnd-kit/utilities";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { colors } from "@/lib/ColorsOption";
 
 type Props = {
   taskGroup: TaskGroup;
@@ -43,6 +51,8 @@ export default function DraftedTodo({ task, taskGroup }: Props) {
   const didInit = useRef(false);
   const [title, setTitle] = useState(task.title);
   const [description, setDescription] = useState(task.description);
+  const [taskColor, setTaskColor] = useState<string>(task.color);
+
   const [open1, setOpen1] = useState(false);
 
   const [open, setOpen] = useState(true);
@@ -64,6 +74,7 @@ export default function DraftedTodo({ task, taskGroup }: Props) {
           new Draggable(elem.current, {
             eventData: {
               title: task.title,
+
               extendedProps: { task, taskGroup },
             },
           })
@@ -84,8 +95,9 @@ export default function DraftedTodo({ task, taskGroup }: Props) {
   return (
     <div style={style} ref={setNodeRef}>
       <div
+        style={{ backgroundColor: task.color }}
         ref={elem}
-        className="border bg-gray-100 cursor-grab active:cursor-grabbing"
+        className="border cursor-grab active:cursor-grabbing"
       >
         <div className="flex justify-between p-3">
           <div className="font-bold">{task.title}</div>
@@ -97,7 +109,7 @@ export default function DraftedTodo({ task, taskGroup }: Props) {
           {task.time.assigned && (
             <Popover>
               <PopoverTrigger asChild>
-                <div className="text-[12px] border rounded-full inline-block w-fit px-2  cursor-pointer hover:bg-gray-200">
+                <div className="text-[12px] border border-gray-500 rounded-full inline-block w-fit px-2 cursor-pointer ">
                   <span>
                     {new Intl.DateTimeFormat("en-US", {
                       dateStyle: "short",
@@ -172,6 +184,33 @@ export default function DraftedTodo({ task, taskGroup }: Props) {
                         onChange={(e) => setDescription(e.target.value)}
                       />
                     </div>
+
+                    <div className="grid gap-3">
+                      <Label htmlFor="color">Select Color</Label>
+                      <Select
+                        onValueChange={(c) => setTaskColor(c)}
+                        value={taskColor}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select Color" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Object.keys(colors).map((c) => (
+                            <SelectItem
+                              value={colors[c]}
+                              key={c}
+                              className="cursor-pointer"
+                            >
+                              <div
+                                className="size-4 "
+                                style={{ backgroundColor: colors[c] }}
+                              ></div>
+                              <div>{c}</div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
                     <div className="flex gap-3">
                       <DialogClose asChild>
                         <Button variant={"secondary"}>Cancel</Button>
@@ -182,6 +221,7 @@ export default function DraftedTodo({ task, taskGroup }: Props) {
                             ...task,
                             title,
                             description,
+                            color: taskColor,
                           });
 
                           setOpen1(false);

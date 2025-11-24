@@ -88,6 +88,8 @@ export const projectStore = {
             task: t,
             taskGroup: tg,
           },
+          backgroundColor: t.color,
+          borderColor: t.color,
         });
       });
     });
@@ -103,7 +105,14 @@ export const projectStore = {
   },
   removeTaskGroup(tg: TaskGroup) {
     store_of_project.activeProject.removeTaskGroup(tg);
-    update_active_project();
+
+    update_store({
+      activeProject: store_of_project.activeProject,
+      events: store_of_project.events.filter((v) => {
+        return v.extendedProps?.taskGroup !== tg;
+      }),
+    });
+    emitChange();
   },
 
   addTask(tg: TaskGroup, t: Task) {
@@ -128,6 +137,8 @@ export const projectStore = {
             task: t,
             taskGroup: tg,
           },
+          backgroundColor: t.color,
+          borderColor: t.color,
         });
       } else {
         store_of_project.events.push({
@@ -139,6 +150,8 @@ export const projectStore = {
             task: t,
             taskGroup: tg,
           },
+          backgroundColor: t.color,
+          borderColor: t.color,
         });
       }
     }
@@ -164,7 +177,7 @@ export const projectStore = {
 
   deleteProject(proj: Project) {
     const i = store_of_project.projects.findIndex((d) => d === proj);
-    console.log(store_of_project.activeProject, proj);
+    // console.log(store_of_project.activeProject, proj);
     if (store_of_project.projects.length < 2) {
       alert("Please create another project before deleting the last one");
     } else if (store_of_project.activeProject == proj) {

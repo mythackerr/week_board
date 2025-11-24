@@ -38,6 +38,9 @@ import { DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
+import { Select, SelectItem, SelectValue } from "../ui/select";
+import { SelectContent, SelectTrigger } from "@/components/ui/select";
+import { colors } from "@/lib/ColorsOption";
 
 const OpenContext = createContext({
   open: false,
@@ -101,6 +104,7 @@ export function TGHeader({ tg }: { tg: TaskGroup }) {
   const [taskDesciption, setTaskDescription] = useState(
     "A beaultiful task description goes here..."
   );
+  const [taskColor, setTaskColor] = useState<string>(Object.values(colors)[0]);
 
   function Delete() {
     return (
@@ -182,6 +186,32 @@ export function TGHeader({ tg }: { tg: TaskGroup }) {
                     onChange={(e) => setTaskDescription(e.target.value)}
                   />
                 </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="color">Select Color</Label>
+                  <Select
+                    onValueChange={(c) => setTaskColor(c)}
+                    value={taskColor}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select Color" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.keys(colors).map((c) => (
+                        <SelectItem
+                          value={colors[c]}
+                          key={c}
+                          className="cursor-pointer"
+                        >
+                          <div
+                            className="size-4 "
+                            style={{ backgroundColor: colors[c] }}
+                          ></div>
+                          <div>{c}</div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
                 <div className="flex gap-3">
                   <DialogClose asChild>
                     <Button variant={"secondary"}>Cancel</Button>
@@ -190,7 +220,7 @@ export function TGHeader({ tg }: { tg: TaskGroup }) {
                     onClick={() => {
                       projectStore.addTask(
                         tg,
-                        createTask(taskTilte, taskDesciption)
+                        createTask(taskTilte, taskDesciption, taskColor)
                       );
                       setDOpen1(false);
                     }}

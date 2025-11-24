@@ -22,6 +22,12 @@ import TGAction from "@/components/TaskGroup/TGAction";
 import { TGCreationDialog } from "@/components/TaskGroup/TGCreationDialog";
 import { DndContext } from "@dnd-kit/core";
 import { Task, TaskGroup } from "@/lib/DataTypes";
+import {
+  CalendarIcon,
+  PersonStandingIcon,
+  Settings2Icon,
+  UserIcon,
+} from "lucide-react";
 
 export default function Page() {
   const { activeProject } = useProject();
@@ -38,8 +44,15 @@ export default function Page() {
       >
         <Sidebar className="overflow-hidden">
           <SidebarHeader>
-            <div className="flex justify-between">
-              <h1 className="text-2xl font-medium">Draft ToDos</h1>
+            <div className="flex justify-between border-b p-3">
+              <h1 className="text-2xl font-medium flex gap-2 items-center">
+                <CalendarIcon />
+                Week Board
+              </h1>
+
+              <div className="border-2 border-black rounded-full size-8 overflow-hidden flex items-center justify-center">
+                <UserIcon />
+              </div>
             </div>
             <div className="p-3">
               <ProjectSwitcher />

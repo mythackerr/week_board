@@ -1,4 +1,5 @@
 import { v4 } from "uuid";
+import { colors } from "./ColorsOption";
 
 type SigAddTaskGroup = (tg: TaskGroup) => void;
 type SigRemoveTaskGroup = (tg: TaskGroup) => void;
@@ -43,17 +44,13 @@ export interface Task {
   title: string;
   description: string;
   time: TaskTime;
-  style: TaskStyle;
+  color: string;
 }
 
 interface TaskTime {
   assigned: boolean;
   start?: Date;
   end?: Date;
-}
-
-interface TaskStyle {
-  color: string;
 }
 
 export function createProject(name: string, def = false): Project {
@@ -141,7 +138,7 @@ export function createGroup(name: string, def = false): TaskGroup {
   const getTask: SigGetTask = (id) => tasks.find((v) => v.id === id);
   const deleteTask: SigDeleteTask = (id) => {
     const pos = tasks.findIndex((v) => v.id === id);
-    console.log(`deleteTask`, pos);
+    // console.log(`deleteTask`, pos);
     if (pos >= 0) {
       tasks.splice(pos, 1);
     }
@@ -162,33 +159,16 @@ export function createGroup(name: string, def = false): TaskGroup {
   };
 }
 
-export function createTask(title: string, description?: string): Task {
+export function createTask(
+  title: string,
+  description?: string,
+  color?: string
+): Task {
   return {
     id: v4(),
     title,
     description: description ?? "placeholder description",
-    style: { color: "palegreen" },
+    color: color ?? Object.values(colors)[0],
     time: { assigned: false },
   };
 }
-
-// testing ground
-
-// const paddleDNA = createProject("paddleDNA");
-// const indigenus = createProject("indegenus");
-
-// const development = createGroup("devel");
-// development.addTask(createTask("Person Api", "returns all the person data"));
-// development.addTask(
-//   createTask("Products Api", "returns all the product information"),
-// );
-// let i = development.getAllTasks()[0].id;
-// paddleDNA.addTaskGroup(development);
-// console.log(paddleDNA.toJSONString(true));
-// const ft = development.getTask(i);
-// if (ft) development.updateTask(i, { ...ft, title: "asd" });
-// console.log(paddleDNA.toJSONString(true));
-// development.deleteTask(development.getAllTasks()[0].id);
-// console.log(paddleDNA.toJSONString(true));
-// development.deleteAllTask();
-// console.log(paddleDNA.toJSONString(true));
