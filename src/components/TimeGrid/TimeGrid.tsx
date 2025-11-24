@@ -126,7 +126,7 @@ export default function Calendar() {
           projectStore.updateTask(taskGroup, task);
         }}
         select={(info) => {
-          const confirmation = confirm("Do you wanna create the project?");
+          const confirmation = confirm("Do you wanna create a new task?");
           if (confirmation) {
             const bar = activeProject.getAllTaskGroups();
             if (bar.length > 0) {
