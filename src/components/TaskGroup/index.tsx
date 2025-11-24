@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { type ReactNode, useState, createContext, useContext } from "react";
 import { cn } from "@/lib/utils";
-import { createGroup, createTask, TaskGroup } from "@/lib/DataTypes";
+import { createTask, TaskGroup } from "@/lib/DataTypes";
 import {
   Tooltip,
   TooltipTrigger,
@@ -21,7 +21,6 @@ import {
   Dialog,
   DialogClose,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -38,7 +37,6 @@ import {
 import { DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "../ui/input";
-import { ButtonGroup } from "../ui/button-group";
 import { Textarea } from "../ui/textarea";
 
 const OpenContext = createContext({
@@ -97,6 +95,7 @@ export function TG({
 export function TGHeader({ tg }: { tg: TaskGroup }) {
   const { open, setOpen } = useContext(OpenContext);
   const [dOpen, setDOpen] = useState(false);
+  const [dOpen1, setDOpen1] = useState(false);
   const [tgTitle, setTGTitle] = useState(tg.name);
   const [taskTilte, setTaskTitle] = useState("Untitled Task");
   const [taskDesciption, setTaskDescription] = useState(
@@ -153,7 +152,7 @@ export function TGHeader({ tg }: { tg: TaskGroup }) {
       </div>
 
       <div className="flex justify-between items-center gap-x-1">
-        <Dialog open={dOpen} onOpenChange={setDOpen}>
+        <Dialog open={dOpen1} onOpenChange={setDOpen1}>
           <DialogTrigger asChild>
             <Button size={"icon-sm"} className="w-12">
               <PlusIcon />
@@ -193,7 +192,7 @@ export function TGHeader({ tg }: { tg: TaskGroup }) {
                         tg,
                         createTask(taskTilte, taskDesciption)
                       );
-                      setDOpen(false);
+                      setDOpen1(false);
                     }}
                   >
                     Done <ArrowUpRight />
