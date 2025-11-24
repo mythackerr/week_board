@@ -1,4 +1,4 @@
-import leadZero from "@/lib/myutils";
+import leadZero from "@/components/TimeGrid/leadZero";
 
 interface IDateContainer {
   dateNumber: number;

@@ -3,11 +3,11 @@ import {
   createPlugin,
   type PluginDef,
 } from "@fullcalendar/core/index.js";
-import { Theme } from "@fullcalendar/core/internal";
-import "./CustomTheme.css";
-class CustomTheme extends Theme {}
+import { Theme as FCTheme } from "@fullcalendar/core/internal";
+import "./Theme.css";
+class Theme extends FCTheme {}
 
-CustomTheme.prototype.classes = {
+Theme.prototype.classes = {
   root: "root",
   table: "table",
   tableCellShaded: "table-active",
@@ -20,9 +20,9 @@ CustomTheme.prototype.classes = {
 };
 
 const plugin = createPlugin({
-  name: `customTheme`,
+  name: `theme`,
   themeClasses: {
-    customTheme: CustomTheme,
+    customTheme: Theme,
   },
 }) as PluginDef;
 

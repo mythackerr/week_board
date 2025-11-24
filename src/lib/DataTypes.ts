@@ -6,13 +6,16 @@ type SigRemoveTaskGroup = (tg: TaskGroup) => void;
 type SigGetAllTaskGroup = () => TaskGroup[];
 type SigToJSONString = (pretty?: boolean) => string;
 type SigAddTaskGroupAt = (tg: TaskGroup, at: number) => void;
+type SigUpdateTaskGroup = (ptg: TaskGroup, ctg: TaskGroup) => void;
 export interface Project {
+  def: boolean;
   name: string;
   addTaskGroup: SigAddTaskGroup;
   addTaskGroupAt: SigAddTaskGroupAt;
   removeTaskGroup: SigRemoveTaskGroup;
   getAllTaskGroups: SigGetAllTaskGroup;
   toJSONString: SigToJSONString;
+  updateTaskGroup: SigUpdateTaskGroup;
 }
 type ProjectJSON = { project_name: string; group: Record<string, Task[]> };
 
@@ -31,6 +34,7 @@ export interface TaskGroup {
   updateTask: SigUpdateTask;
   deleteTask: SigDeleteTask;
   deleteAllTask: SigDeleteAllTask;
+  def: boolean;
 }
 
 export type TaskID = string;
@@ -52,7 +56,7 @@ interface TaskStyle {
   color: string;
 }
 
-export function createProject(name: string): Project {
+export function createProject(name: string, def = false): Project {
   const taskGroups: TaskGroup[] = [];
   const addTaskGroup: SigAddTaskGroup = (tg) => {
     taskGroups.push(tg);
@@ -70,6 +74,14 @@ export function createProject(name: string): Project {
       console.log(`Taskgroup: ${tg.name} doesn't exist in project: ${name}`);
   };
   const getAllTaskGroups: SigGetAllTaskGroup = () => taskGroups;
+  const updateTaskGroup: SigUpdateTaskGroup = (ptg, ctg) => {
+    const i = taskGroups.findIndex((v) => v === ptg);
+
+    if (i >= 0) {
+      taskGroups.splice(i, 1, ctg);
+    } else
+      console.log(`Taskgroup: ${ptg.name} doesn't exist in project: ${name}`);
+  };
 
   const toJSON: SigToJSONString = (pretty = false) => {
     const finalData: ProjectJSON = {
@@ -83,12 +95,14 @@ export function createProject(name: string): Project {
   };
 
   return {
+    def,
     name,
     addTaskGroup,
     removeTaskGroup,
     getAllTaskGroups,
     toJSONString: toJSON,
     addTaskGroupAt,
+    updateTaskGroup,
   };
 }
 
@@ -111,7 +125,7 @@ export function createProjectFromJSONString(value: string): Project | null {
   return null;
 }
 
-export function createGroup(name: string): TaskGroup {
+export function createGroup(name: string, def = false): TaskGroup {
   const tasks: Task[] = [];
   const addTask: SigAddTask = (t) => {
     tasks.push(t);
@@ -144,6 +158,7 @@ export function createGroup(name: string): TaskGroup {
     getTask,
     deleteTask,
     deleteAllTask,
+    def,
   };
 }
 

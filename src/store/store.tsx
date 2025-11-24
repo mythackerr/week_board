@@ -26,8 +26,8 @@ interface ProjectSnapshot {
     };
   }[];
 }
-const defaultProject = createProject("Default Project");
-defaultProject.addTaskGroup(createGroup("Default Group"));
+const defaultProject = createProject("Default Project", true);
+defaultProject.addTaskGroup(createGroup("Default Task Group", true));
 
 let store_of_project: ProjectSnapshot = {
   projects: [defaultProject],
@@ -68,6 +68,7 @@ export const projectStore = {
         (v) => v.name.trim().toLowerCase() === p.name.trim().toLowerCase()
       )
     ) {
+      p.addTaskGroup(createGroup("Default Task Group", true));
       update_store({ projects: [...store_of_project.projects, p] });
 
       emitChange();
@@ -176,6 +177,11 @@ export const projectStore = {
     });
 
     emitChange();
+  },
+
+  updateTaskGroup(ptg: TaskGroup, ctg: TaskGroup) {
+    store_of_project.activeProject.updateTaskGroup(ptg, ctg);
+    update_active_project();
   },
 };
 

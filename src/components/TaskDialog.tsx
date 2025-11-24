@@ -16,7 +16,7 @@ import { DialogClose } from "@radix-ui/react-dialog";
 
 import { ArrowUpRight, Plus } from "lucide-react";
 import { useState } from "react";
-import { projectStore } from "@/app/store";
+import { projectStore } from "@/store/store";
 
 export default function TaskDialog({ tg }: { tg: TaskGroup }) {
   const [title, setTitle] = useState("unknown task");

@@ -1,6 +1,7 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import "./globals.css";
 import { Montserrat } from "next/font/google";
+import { Provider } from "jotai";
 
 const montserrat = Montserrat();
 
@@ -9,10 +10,6 @@ export const metadata: Metadata = {
   description: "A 7-day task planner",
 };
 
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-};
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -20,7 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`antialiased ${montserrat.className}`}>{children}</body>
+      <Provider>
+        <body className={`antialiased ${montserrat.className}`}>
+          {children}
+        </body>
+      </Provider>
     </html>
   );
 }

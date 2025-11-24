@@ -3,11 +3,11 @@ import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import DateContainer from "./DateContainer";
-import customTheme from "./CustomTheme";
+import theme from "./Theme/Theme";
 import { useEffect, useRef, useState } from "react";
 import { createTask, Task, TaskGroup, TaskID } from "@/lib/DataTypes";
 import { Button } from "@/components/ui/button";
-import { projectStore, useProject } from "@/app/store";
+import { projectStore, useProject } from "@/store/store";
 import { v4 } from "uuid";
 
 export default function Calendar() {
@@ -16,8 +16,8 @@ export default function Calendar() {
   const calendarRef = useRef<FullCalendar>(null);
 
   useEffect(() => {
-    console.log(`UPDATED EVENTs`);
-    console.log(events);
+    // console.log(`UPDATED EVENTs`);
+    // console.log(events);
 
     if (calendarRef.current) {
       const api = calendarRef.current.getApi();
@@ -64,16 +64,19 @@ export default function Calendar() {
         allDaySlot={false}
         droppable={true}
         editable={true}
+        eventResizableFromStart={true}
         selectable={true}
         // configs
         ref={calendarRef}
-        plugins={[timeGridPlugin, customTheme, interactionPlugin]}
+        plugins={[timeGridPlugin, theme, interactionPlugin]}
         height={"90svh"}
         themeSystem="customTheme"
         initialView="timeGridWeek"
         slotLabelClassNames={"slot-label"}
         eventClassNames={"event"}
         slotLaneClassNames={"slot-lane"}
+        snapDuration={{ minute: 15 }}
+        // eventStartEditable={true}
         // selectMirror={true}
 
         // functions
@@ -99,25 +102,23 @@ export default function Calendar() {
             </div>
           );
         }}
-        eventDragStop={(info) => {
-          const { task, taskGroup } = info.event.extendedProps as {
-            task: Task;
-            taskGroup: TaskGroup;
-          };
-
-          console.log(info);
-
-          // task.time.start = info.event.start!;
-          // task.time.end = info.event.end!;
-          // projectStore.updateTask(taskGroup, task);
-        }}
+        // eventDragStop={(info) => {
+        //   // alert(1);
+        //   const { task, taskGroup } = info.event.extendedProps as {
+        //     task: Task;
+        //     taskGroup: TaskGroup;
+        //   };
+        //   task.time.start = info.event.start!;
+        //   task.time.end = info.event.end!;
+        //   projectStore.updateTask(taskGroup, task);
+        // }}
         eventResize={(info) => {
           const { task, taskGroup } = info.event.extendedProps as {
             task: Task;
             taskGroup: TaskGroup;
           };
 
-          console.log(info.event);
+          console.log(task);
 
           task.time.start = info.event.start!;
           task.time.end = info.event.end!;
@@ -128,7 +129,10 @@ export default function Calendar() {
           if (confirmation) {
             const bar = activeProject.getAllTaskGroups();
             if (bar.length > 0) {
-              const foo = createTask(v4(), "blank description");
+              const foo = createTask(
+                `Untitled Task #${bar[0].getAllTasks().length}`,
+                "blank description"
+              );
 
               projectStore.addTask(bar[0], foo);
               foo.time = {
