@@ -84,11 +84,13 @@ export const projectStore = {
           title: t.title,
           start: t.time.start!,
           end: t.time.end!,
+          extendedProps: {
+            task: t,
+            taskGroup: tg,
+          },
         });
       });
     });
-    console.log(p);
-    console.log(store_of_project.events);
 
     update_store({ activeProject: p, events: [...store_of_project.events] });
 
@@ -115,7 +117,6 @@ export const projectStore = {
   updateTask(tg: TaskGroup, t: Task) {
     tg.updateTask(t.id, t);
     const i = store_of_project.events.findIndex((e) => e.id === t.id);
-    console.log(i);
     if (t.time.assigned) {
       if (i >= 0) {
         store_of_project.events.splice(i, 1, {

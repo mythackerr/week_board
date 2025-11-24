@@ -5,20 +5,22 @@ import interactionPlugin from "@fullcalendar/interaction";
 import DateContainer from "./DateContainer";
 import theme from "./Theme/Theme";
 import { useEffect, useRef, useState } from "react";
-import { createTask, Task, TaskGroup, TaskID } from "@/lib/DataTypes";
+import { createTask, Task, TaskGroup } from "@/lib/DataTypes";
 import { Button } from "@/components/ui/button";
 import { projectStore, useProject } from "@/store/store";
-import { v4 } from "uuid";
 
 export default function Calendar() {
   const { activeProject, events } = useProject();
 
+  const [start, setStart] = useState<Date | null>();
+  const [end, setEnd] = useState<Date | null>();
+
+  useEffect(() => {
+    console.log(start?.getHours(), end?.getHours());
+  }, [start, end]);
   const calendarRef = useRef<FullCalendar>(null);
 
   useEffect(() => {
-    // console.log(`UPDATED EVENTs`);
-    // console.log(events);
-
     if (calendarRef.current) {
       const api = calendarRef.current.getApi();
       setTimeout(() => {
@@ -81,6 +83,16 @@ export default function Calendar() {
 
         // functions
 
+        eventDidMount={(info) => {
+          // const { task, taskGroup } = info.event.extendedProps as {
+          //   task: Task;
+          //   taskGroup: TaskGroup;
+          // };
+          setStart(info.event.start!);
+          setEnd(info.event.end!);
+          // console.log(info.event.start);
+          // projectStore.updateTask(taskGroup, task);
+        }}
         eventReceive={(info) => {
           const { task, taskGroup } = info.event.extendedProps as {
             task: Task;
@@ -88,7 +100,7 @@ export default function Calendar() {
           };
 
           task.time.assigned = true;
-          task.time.start = info.event.start!;
+          task.time.start = new Date(info.event.start!);
           task.time.end = info.event.end!;
           projectStore.updateTask(taskGroup, task);
         }}
@@ -102,16 +114,18 @@ export default function Calendar() {
             </div>
           );
         }}
-        // eventDragStop={(info) => {
-        //   // alert(1);
-        //   const { task, taskGroup } = info.event.extendedProps as {
-        //     task: Task;
-        //     taskGroup: TaskGroup;
-        //   };
-        //   task.time.start = info.event.start!;
-        //   task.time.end = info.event.end!;
-        //   projectStore.updateTask(taskGroup, task);
-        // }}
+        eventDragStop={(info) => {
+          const { task, taskGroup } = info.event.extendedProps as {
+            task: Task;
+            taskGroup: TaskGroup;
+          };
+
+          // alert("Drag featured switched off due to unwanted bug! :(");
+          // console.log(info.event.start);
+          task.time.start = start!;
+          task.time.end = end!;
+          projectStore.updateTask(taskGroup, task);
+        }}
         eventResize={(info) => {
           const { task, taskGroup } = info.event.extendedProps as {
             task: Task;

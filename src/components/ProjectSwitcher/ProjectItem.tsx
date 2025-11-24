@@ -1,4 +1,3 @@
-import { useProjectStore } from "@/store/ProjectStore";
 import { DialogTrigger } from "@/components/ui/dialog";
 import { LockIcon, Trash2Icon } from "lucide-react";
 import { ReactNode } from "react";
@@ -12,8 +11,7 @@ import { Project } from "@/lib/DataTypes";
 import { projectStore, useProject } from "@/store/store";
 
 export function ProjectItem({ project }: { project: Project }) {
-  // const { projects, removeProject, setActiveProject, activeProject } =
-  const { projects, activeProject } = useProject();
+  const { activeProject } = useProject();
 
   function Delete() {
     return (
@@ -46,7 +44,6 @@ export function ProjectItem({ project }: { project: Project }) {
   }
 
   function handleOnSelect() {
-    // setActiveProject(project);
     projectStore.setActiveProject(project);
   }
   return (
