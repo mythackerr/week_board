@@ -69,7 +69,7 @@ export function TG({
   className?: string;
   tg: TaskGroup;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const { isOver, setNodeRef } = useDroppable({
     id: tg.name,
