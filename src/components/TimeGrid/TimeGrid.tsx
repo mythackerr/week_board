@@ -69,6 +69,7 @@ export default function Calendar() {
         ref={calendarRef}
         plugins={[timeGridPlugin, theme, interactionPlugin]}
         height={"90svh"}
+        longPressDelay={600}
         themeSystem="customTheme"
         initialView="timeGridWeek"
         slotLabelClassNames={"slot-label"}

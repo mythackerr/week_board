@@ -20,19 +20,54 @@ import {
 import { projectStore, useProject } from "../store/store";
 import TGAction from "@/components/TaskGroup/TGAction";
 import { TGCreationDialog } from "@/components/TaskGroup/TGCreationDialog";
-import { DndContext } from "@dnd-kit/core";
-import { Task, TaskGroup } from "@/lib/DataTypes";
 import {
-  CalendarIcon,
-  PersonStandingIcon,
-  Settings2Icon,
-  UserIcon,
-} from "lucide-react";
+  DndContext,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import { Task, TaskGroup } from "@/lib/DataTypes";
+import { CalendarIcon, UserIcon } from "lucide-react";
+
+import type { Modifier } from "@dnd-kit/core";
+import { restrictToBoundingRect } from "@/lib/restrictToBoundRect";
+import { useRef } from "react";
 
 export default function Page() {
   const { activeProject } = useProject();
-  // const [activeDraggingTask, setActiveDraggingTask] = useState<Task | null>();
-  // const [activeDraggingTG, setActiveDraggingTG] = useState<TaskGroup | null>();
+
+  const ref_of_client = useRef<HTMLDivElement | null>(null);
+
+  const restrictToParentElement: Modifier = ({
+    draggingNodeRect,
+    transform,
+  }) => {
+    const bounding = ref_of_client.current?.getBoundingClientRect();
+
+    if (!draggingNodeRect || !bounding) {
+      return transform;
+    }
+
+    console.log(draggingNodeRect);
+
+    return restrictToBoundingRect(transform, draggingNodeRect, bounding);
+  };
+
+  const touchSensor = useSensor(TouchSensor, {
+    activationConstraint: {
+      distance: 10,
+    },
+  });
+
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 10,
+    },
+  });
+
+  const sensors = useSensors(mouseSensor, touchSensor);
+
   return (
     <div>
       <SidebarProvider
@@ -59,12 +94,13 @@ export default function Page() {
             </div>
           </SidebarHeader>
           <SidebarSeparator />
-          <SidebarContent className="overflow-x-hidden">
+          <SidebarContent className="overflow-x-hidden" ref={ref_of_client}>
             {/*Task Groups */}
             <div>
               <TGContainer>
                 <DndContext
-                  modifiers={[]}
+                  modifiers={[restrictToParentElement]}
+                  sensors={sensors}
                   onDragEnd={(event) => {
                     // console.log(event);
 
